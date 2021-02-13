@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Button, Image, View, FlatList, Text } from 'react-native';
+import { StyleSheet, Button, Image,
+          View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import colors from '../resources/colors.js'
 
-const MainPage = () => {
+const MainPage = ({ navigation }) => {
 
   const dataTest = [
     { id: '1', title: 'User1' },
@@ -10,7 +13,7 @@ const MainPage = () => {
     { id: '3', title: 'User3' }
   ];
   //states
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
@@ -18,21 +21,26 @@ const MainPage = () => {
 
   //updates and re-renders page, fetches data
   useEffect(() => {
-    //setIsLoading(true);
-    loadDefaultData(allUsersLink)
+    loadApiData(allUsersLink)
   }, []);
 
-  function loadDefaultData(apiLink) {
+  //Fetches results from GitHub API
+  function loadApiData(apiLink) {
     fetch(apiLink)
       .then(response => response.json())
       .then(response => {
         setData(response);
-        //setIsLoading(false);
+        setLoading(false);
       })
       .catch(err => {
-        //setIsLoading(false);
+        setLoading(false);
         setError(err);
       });
+  }
+
+  //outputs current data state to console
+  function navToProfile(){
+    navigation.navigate('Profile', { profileLink: 'https://api.github.com/users/vfranco2' })
   }
 
   //Main view
@@ -42,10 +50,10 @@ const MainPage = () => {
         data={data}
         keyExtractor={item => item.login}
         renderItem={({ item }) => (
-          <View style={styles.userList}>
+          <TouchableOpacity style={styles.userList} onPress={() => navToProfile()}>
             <Image style={styles.userImage} source={{ uri: item.avatar_url }} />
             <Text style={styles.userName}>{item.login}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
