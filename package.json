@@ -10,8 +10,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "jest-fetch-mock": "^3.0.3",
     "react": "16.13.1",
-    "react-native": "0.63.4"
+    "react-native": "0.63.4",
+    "react-native-vector-icons": "^8.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
@@ -24,6 +26,8 @@
     "react-test-renderer": "16.13.1"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "automock": false,
+    "setupFiles": ["./setupJest.js"]
   }
 }
