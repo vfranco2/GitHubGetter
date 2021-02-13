@@ -1,4 +1,5 @@
 require('jest-fetch-mock').enableMocks()
+
 import { NativeModules as RNNativeModules } from "react-native";
 RNNativeModules.UIManager = RNNativeModules.UIManager || {};
 RNNativeModules.UIManager.RCTView = RNNativeModules.UIManager.RCTView || {};

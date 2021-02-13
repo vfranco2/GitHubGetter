@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Button, Image,
-          View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import colors from '../resources/colors.js'
+import styles from '../resources/stylesMain.js'
 
 const MainPage = ({ navigation }) => {
 
-  const dataTest = [
-    { id: '1', title: 'User1' },
-    { id: '2', title: 'User2' },
-    { id: '3', title: 'User3' }
-  ];
   //states
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -38,7 +33,7 @@ const MainPage = ({ navigation }) => {
       });
   }
 
-  //outputs current data state to console
+  //Navigates to selected profile page
   function navToProfile(){
     navigation.navigate('Profile', { profileLink: 'https://api.github.com/users/vfranco2' })
   }
@@ -60,32 +55,6 @@ const MainPage = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  mainPage: {
-    flex:0,
-    backgroundColor: colors.bgAccent
-  },
-  userList: {
-    backgroundColor: colors.bg,
-    padding: 12,
-    marginHorizontal: 8,
-    marginVertical: 4,
-    borderColor: colors.border,
-    borderWidth: 1,
-    borderRadius: 8,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  userImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 40/2,
-    marginRight: 12
-  },
-  userName: {
-    fontSize: 26,
-    color: colors.textPri
-  },
-});
+
 
 export default MainPage;

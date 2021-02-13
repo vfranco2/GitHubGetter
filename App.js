@@ -5,8 +5,10 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import colors from './resources/colors.js';
+import styles from './resources/stylesApp.js';
 import MainPage from './components/MainPage.js';
 import ProfilePage from './components/ProfilePage.js';
+import RepoPage from './components/RepoPage.js';
 
 const Stack = createStackNavigator();
 
@@ -32,25 +34,13 @@ const App = () => {
           options={{ headerTintColor: colors.bg, headerStyle: { backgroundColor: colors.textPri, },
                    headerTitle: props => <GitHeader /> }}/>
 
+        <Stack.Screen name="Repo" component={RepoPage}
+          options={{ headerTintColor: colors.bg, headerStyle: { backgroundColor: colors.textPri, },
+                  headerTitle: props => <GitHeader /> }}/>
+
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  navBar: {
-    padding: 8,
-    flex: 0,
-    flexDirection: 'row',
-    backgroundColor: colors.textPri,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  navText: {
-    fontSize: 20,
-    marginLeft: 8,
-    color: colors.bg,
-  },
-});
 
 export default App;
