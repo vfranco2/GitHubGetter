@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: colors.textPri,
     alignItems: "center",
-    justifyContent: "center",
   },
   navText: {
     fontSize: 20,

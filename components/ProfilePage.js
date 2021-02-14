@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, View, FlatList, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, Image, View, FlatList, Text, TouchableOpacity,
+   ActivityIndicator, RefreshControl, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import colors from '../resources/colors.js'
@@ -26,12 +27,18 @@ const ProfilePage = ({ route, navigation }) => {
     fetch(apiLink)
       .then(response => response.json())
       .then(response => {
-        stateUpdater(response);
-        setLoading(false);
+        if(response.message != 'Not Found'){
+          stateUpdater(response);
+          setLoading(false);
+        }
+        else{
+          setError('GitHub API query error. Reload the page and try again.')
+          setLoading(false);
+        }
       })
       .catch(err => {
         setLoading(false);
-        setError(err);
+        setError('Connection error. Reload the page and try again.');
       });
   }
 
@@ -44,8 +51,23 @@ const ProfilePage = ({ route, navigation }) => {
     );
   }
 
+  if (error) {
+    Alert.alert(
+      "Error",
+      error,
+      [ { text: "OK", onPress: () => setError(null) } ]
+    );
+  }
+
   function navToRepo(url){
     navigation.navigate('Repo', { repoLink: url})
+  }
+
+
+  function onRefresh() {
+    setLoading(true);
+    loadApiData(`${profileLink}/repos`, setDataRepos)
+    setLoading(false);
   }
 
   //Main view
@@ -75,13 +97,17 @@ const ProfilePage = ({ route, navigation }) => {
         keyExtractor={item => item.name}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.repoList} onPress={() => navToRepo(item.url)}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={styles.repoName}>{item.name}</Text>
-              <Text style={styles.repoName}>{item.language}</Text>
+            <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                <Image style={{marginHorizontal: 4}} source={require('../resources/icons/octiconrepo.png')}/>
+                <Text style={styles.repoName}>{item.name}</Text>
+              </View>
+              <Text style={styles.repoYear}>{item.created_at.substring(0,10)}</Text>
             </View>
             <Text style={styles.repoDesc}>{item.description}</Text>
           </TouchableOpacity>
         )}
+        refreshControl={ <RefreshControl refreshing={loading} onRefresh={onRefresh} /> }
       />
 
     </View>

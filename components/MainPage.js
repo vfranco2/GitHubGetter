@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, View, FlatList, Text, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
+import { StyleSheet, Image, View, FlatList, Text, TouchableOpacity,
+   ActivityIndicator, TextInput, RefreshControl, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import colors from '../resources/colors.js'
@@ -17,6 +18,7 @@ const MainPage = ({ navigation }) => {
 
   //updates and re-renders page, fetches data
   useEffect(() => {
+    setLoading(true);
     loadApiData(allUsersLink)
   }, []);
 
@@ -40,12 +42,18 @@ const MainPage = ({ navigation }) => {
     fetch(apiLink)
       .then(response => response.json())
       .then(response => {
-        setData(response);
-        setLoading(false);
+        if(response.message != 'Not Found'){
+          setData(response);
+          setLoading(false);
+        }
+        else{
+          setError('GitHub API query error. Reload the page and try again.')
+          setLoading(false);
+        }
       })
       .catch(err => {
         setLoading(false);
-        setError(err);
+        setError('Connection error. Reload the page and try again.');
       });
   }
 
@@ -58,9 +66,23 @@ const MainPage = ({ navigation }) => {
     );
   }
 
+  if (error) {
+    Alert.alert(
+      "Error",
+      error,
+      [ { text: "OK", onPress: () => setError(null) } ]
+    );
+  }
+
   //Navigates to selected profile page
   function navToProfile(url){
     navigation.navigate('Profile', { profileLink: url })
+  }
+
+  function onRefresh() {
+    setLoading(true);
+    loadApiData(allUsersLink)
+    setLoading(false);
   }
 
   //Main view
@@ -76,6 +98,7 @@ const MainPage = ({ navigation }) => {
             <Text style={styles.userName}>{item.login}</Text>
           </TouchableOpacity>
         )}
+        refreshControl={ <RefreshControl refreshing={loading} onRefresh={onRefresh} /> }
       />
     </View>
   );

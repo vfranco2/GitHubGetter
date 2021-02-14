@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, View, FlatList, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, Image, View, FlatList, Text, ActivityIndicator,
+  RefreshControl, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import colors from '../resources/colors.js'
@@ -26,12 +27,18 @@ const RepoPage = ({ route, navigation }) => {
     fetch(apiLink)
       .then(response => response.json())
       .then(response => {
-        stateUpdater(response);
-        setLoading(false);
+        if(response.message != 'Not Found'){
+          stateUpdater(response);
+          setLoading(false);
+        }
+        else{
+          setError('GitHub API query error. Reload the page and try again.')
+          setLoading(false);
+        }
       })
       .catch(err => {
         setLoading(false);
-        setError(err);
+        setError('Connection error. Reload the page and try again.');
       });
   }
 
@@ -42,6 +49,20 @@ const RepoPage = ({ route, navigation }) => {
         <ActivityIndicator size="large" color={colors.textPri} />
       </View>
     );
+  }
+
+  if (error) {
+    Alert.alert(
+      "Error",
+      error,
+      [ { text: "OK", onPress: () => setError(null) } ]
+    );
+  }
+
+  function onRefresh() {
+    setLoading(true);
+    loadApiData(`${repoLink}/commits`, setDataCommits)
+    setLoading(false);
   }
 
   //Main view
@@ -61,19 +82,22 @@ const RepoPage = ({ route, navigation }) => {
         renderItem={({ item }) => (
           <View style={styles.commitList}>
             <View style={styles.commitHead}>
-              <Text style={styles.commitAuthor}>{item.commit.author.name}</Text>
+              <View style={styles.commitMsg}>
+                <View style={styles.commitColor}><Text> </Text></View>
+                <Text style={styles.commitAuthor}>{item.commit.author.name}</Text>
+              </View>
               <Text style={styles.commitAuthor}>{item.commit.author.date.substring(0,10)}</Text>
             </View>
 
             <View style={styles.commitMsg}>
-              <View style={styles.commitColor}><Text> </Text></View>
+              <Image style={{marginHorizontal: 4}} source={require('../resources/icons/octiconcommit.png')}/>
               <Text style={styles.commitInfo}>{item.commit.message}</Text>
             </View>
-
 
             <Text style={styles.commitInfo}>{item.sha}</Text>
           </View>
         )}
+        refreshControl={ <RefreshControl refreshing={loading} onRefresh={onRefresh} /> }
       />
 
     </View>

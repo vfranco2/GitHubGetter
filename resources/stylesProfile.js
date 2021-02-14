@@ -60,13 +60,29 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   repoName: {
-    fontSize: 20,
+    fontSize: 16,
     color: colors.textPri,
+    textAlign: 'left',
   },
-  repoName: {
+  repoYear: {
+    fontSize: 16,
+    color: colors.textPri,
+    textAlign: 'right',
+  },
+  repoDesc: {
     fontSize: 16,
     color: colors.textSec,
     textAlign: 'left',
+  },
+  errorPane: {
+    flex: 1,
+    padding: 12,
+    marginHorizontal: 8,
+    borderColor: colors.border,
+    borderWidth: 1,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
 

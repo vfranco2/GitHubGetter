@@ -27,6 +27,16 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: colors.textPri
   },
+  errorPane: {
+    flex: 1,
+    padding: 12,
+    marginHorizontal: 8,
+    borderColor: colors.border,
+    borderWidth: 1,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
 
 export default styles;

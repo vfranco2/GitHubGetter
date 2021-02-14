@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     marginVertical:2,
   },
   commitHead: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -63,6 +64,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.commitColorPri,
     marginRight: 4
   },
+  errorPane: {
+    flex: 1,
+    padding: 12,
+    marginHorizontal: 8,
+    borderColor: colors.border,
+    borderWidth: 1,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
 
 export default styles;
