@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, FlatList, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import colors from '../resources/colors.js'
@@ -12,7 +12,6 @@ const ProfilePage = ({ route, navigation }) => {
   const [dataRepos, setDataRepos] = useState([]);
   const [error, setError] = useState(null);
 
-  //const apiLink = 'https://api.github.com/users/vfranco2';
   const {profileLink} = route.params;
 
   //updates and re-renders page, fetches data
@@ -36,8 +35,17 @@ const ProfilePage = ({ route, navigation }) => {
       });
   }
 
-  function navToRepo(){
-    navigation.navigate('Repo', { repoLink: 'https://api.github.com/repos/vfranco2/FootForward'})
+  //Load spinny thing
+  if (loading) {
+    return (
+      <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={colors.textPri} />
+      </View>
+    );
+  }
+
+  function navToRepo(url){
+    navigation.navigate('Repo', { repoLink: url})
   }
 
   //Main view
@@ -66,7 +74,7 @@ const ProfilePage = ({ route, navigation }) => {
         data={dataRepos}
         keyExtractor={item => item.name}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.repoList} onPress={() => navToRepo()}>
+          <TouchableOpacity style={styles.repoList} onPress={() => navToRepo(item.url)}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={styles.repoName}>{item.name}</Text>
               <Text style={styles.repoName}>{item.language}</Text>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, View, FlatList, Text } from 'react-native';
+import { StyleSheet, Image, View, FlatList, Text, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import colors from '../resources/colors.js'
@@ -12,7 +12,6 @@ const RepoPage = ({ route, navigation }) => {
   const [dataCommits, setDataCommits] = useState([]);
   const [error, setError] = useState(null);
 
-  //const apiLink = 'https://api.github.com/repos/vfranco2/tidbit';
   const {repoLink} = route.params;
 
   //updates and re-renders page, fetches data
@@ -36,6 +35,15 @@ const RepoPage = ({ route, navigation }) => {
       });
   }
 
+  //Load spinny thing
+  if (loading) {
+    return (
+      <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={colors.textPri} />
+      </View>
+    );
+  }
+
   //Main view
   return (
     <View style={styles.repoPage}>
@@ -49,7 +57,7 @@ const RepoPage = ({ route, navigation }) => {
 
       <FlatList
         data={dataCommits}
-        keyExtractor={item => item.first}
+        keyExtractor={item => item.sha}
         renderItem={({ item }) => (
           <View style={styles.commitList}>
             <View style={styles.commitHead}>
