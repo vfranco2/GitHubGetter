@@ -3,11 +3,12 @@ import colors from './colors.js'
 
 const styles = StyleSheet.create({
   navBar: {
-    padding: 8,
+    padding: 6,
     flex: 0,
     flexDirection: 'row',
     backgroundColor: colors.textPri,
     alignItems: "center",
+    minHeight: 25,
   },
   navText: {
     fontSize: 20,

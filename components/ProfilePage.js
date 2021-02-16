@@ -78,11 +78,11 @@ const ProfilePage = ({ route, navigation }) => {
           <View>
             <Text style={styles.userName}>{dataProfile.login}</Text>
             <View style={styles.userInfo}>
-              <View>
-                <Text style={styles.userDetailsLeft}>{dataProfile.company}</Text>
+              <View style={{flex:1}}>
+                <Text style={styles.userDetailsLeft} numberOfLines={1}>{dataProfile.company}</Text>
                 <Text style={styles.userDetailsLeft}>{dataProfile.blog}</Text>
               </View>
-              <View>
+              <View style={{flex:1}}>
                 <Text style={styles.userDetailsRight}>Public Repos: {dataProfile.public_repos}</Text>
                 <Text style={styles.userDetailsRight}>Followers: {dataProfile.followers}</Text>
               </View>

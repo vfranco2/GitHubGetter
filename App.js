@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, View, Text, StatusBar } from 'react-native';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import { SafeAreaView, StyleSheet, View, Text, Image, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import colors from './resources/colors.js';
@@ -15,7 +14,7 @@ const Stack = createStackNavigator();
 function GitHeader() {
   return (
     <View style={styles.navBar}>
-      <Icon name="github" size={40} color="#FFF" />
+      <Image source={require('./resources/icons/githubcat.png')} style={{height: 30, width:30}} />
       <Text style={styles.navText}>GitVlad</Text>
     </View>
   );

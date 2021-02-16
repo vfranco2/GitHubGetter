@@ -106,12 +106,13 @@ const MainPage = ({ navigation }) => {
   //Returns the search bar
   function searchBar() {
     return(
-      <View style={{backgroundColor: colors.textPri, padding: 10,}}>
-        <TextInput style={{backgroundColor: colors.bg, paddingHorizontal: 20,
+      <View style={{backgroundColor: colors.textPri, padding: 10, minHeight: 40}}>
+        <TextInput style={{backgroundColor: colors.bg, paddingHorizontal: 20, minHeight: 40,
                       borderColor: colors.border, borderWidth: 2, borderRadius:20/2}}
                    placeholder="Search all GitHub users"
                    onSubmitEditing={event => {const text = event.nativeEvent.text;
-                      handleSubmit(text)}}/>
+                      handleSubmit(text)}}
+                   autoComplete={false}/>
       </View>
     )
   }
